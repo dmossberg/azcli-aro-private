@@ -59,9 +59,9 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az aro create \
-            --resource-group ${{ inputs.aro_rg }} \
-            --name ${{ inputs.aro_cluster_name }} \
-            --vnet ${{ inputs.aro_cluster_name }}  \
+            --resource-group "${{ inputs.aro_rg }}" \
+            --name "${{ inputs.aro_cluster_name }}" \
+            --vnet "${{ inputs.aro_cluster_name }}"  \
             --master-subnet master \
             --worker-subnet worker \
             --apiserver-visibility Public \
