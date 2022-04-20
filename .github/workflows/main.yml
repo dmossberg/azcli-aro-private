@@ -6,6 +6,23 @@ name: Deploy Private ARO Cluster
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      aro_rg:
+        description: The resource group to deploy the cluster to
+        type: string
+        required: true
+        default: aro-private
+      aro_cluster_name:
+        description: The name of the cluster to deploy
+        type: string
+        required: true
+        default: aroprivatefta
+      aro_vnet_name:
+        description: The name of the virtual network to deploy the cluster to
+        type: string
+        required: true
+        default: aro-vnet
+      
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -34,11 +51,18 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          
-      - name: Azure CLI script file
+
+      # Deploy ARO cluster
+      - name: Deploy ARO
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.30.0
+          azcliversion: latest
           inlineScript: |
-            chmod +x $GITHUB_WORKSPACE/sampleScript.sh
-            $GITHUB_WORKSPACE/sampleScript.sh
+            az aro create \
+            --resource-group ${{ inputs.aro_rg }} \
+            --name ${{ inputs.aro_cluster_name }} \
+            --vnet ${{ inputs.aro_cluster_name }}  \
+            --master-subnet master \
+            --worker-subnet worker \
+            --apiserver-visibility Public \
+            --ingress-visibility Public
