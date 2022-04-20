@@ -52,5 +52,4 @@ jobs:
             --master-subnet master \
             --worker-subnet worker \
             --apiserver-visibility Public \
-            --ingress-visibility Public \
-            --pull-secret "${{ secrets.REDHAT_PULLSECRET }}"
+            --ingress-visibility Public
